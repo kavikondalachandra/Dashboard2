@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Strategic Darwinism · Corporate India 2026–2031</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root {
+  --navy: #06102B;
+  --navy-mid: #0E1F4D;
+  --navy-light: #162966;
+  --saffron: #FF9933;
+  --saffron-dim: rgba(255,153,51,0.15);
+  --jade: #1EC98A;
+  --jade-dim: rgba(30,201,138,0.12);
+  --amber: #F5A623;
+  --crimson: #E84040;
+  --crimson-dim: rgba(232,64,64,0.12);
+  --white: #F0F4FF;
+  --muted: #8898BB;
+  --border: rgba(255,255,255,0.07);
+  --card: rgba(255,255,255,0.04);
+  --card-hover: rgba(255,255,255,0.07);
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+*, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
+html, body { height: 100%; background: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; }
+
+/* ── LAYOUT ── */
+.shell { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 220px; min-height: 100vh; background: var(--navy-mid);
+  border-right: 1px solid var(--border); position: sticky; top: 0;
+  display: flex; flex-direction: column; padding: 28px 0; flex-shrink: 0;
+}
+.sidebar-logo {
+  padding: 0 20px 24px; border-bottom: 1px solid var(--border);
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+  line-height: 1.4; color: var(--saffron); letter-spacing: 0.02em;
+}
+.sidebar-logo span { display: block; color: var(--muted); font-size: 10px; font-weight: 400; margin-top: 4px; letter-spacing: 0.04em; }
+.nav-section { padding: 20px 0 8px 20px; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; font-weight: 600; text-transform: uppercase; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 20px;
+  cursor: pointer; font-size: 12.5px; color: var(--muted);
+  transition: background 0.15s, color 0.15s; position: relative; border: none; background: none; width: 100%; text-align: left;
+}
+.nav-item:hover { background: var(--card-hover); color: var(--white); }
+.nav-item.active { background: var(--saffron-dim); color: var(--saffron); }
+.nav-item.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--saffron); border-radius: 0 2px 2px 0; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+.main { flex: 1; overflow-x: hidden; }
+
+/* ── TOP BAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 32px; border-bottom: 1px solid var(--border);
+  background: rgba(6,16,43,0.7); backdrop-filter: blur(8px);
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+.topbar-meta { font-size: 11px; color: var(--muted); }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; }
+.badge-saffron { background: var(--saffron-dim); color: var(--saffron); border: 1px solid rgba(255,153,51,0.3); }
+.badge-jade { background: var(--jade-dim); color: var(--jade); border: 1px solid rgba(30,201,138,0.3); }
+.badge-amber { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+.badge-crimson { background: var(--crimson-dim); color: var(--crimson); border: 1px solid rgba(232,64,64,0.3); }
+
+/* ── CONTENT VIEWS ── */
+.view { display: none; padding: 32px; }
+.view.active { display: block; }
+
+/* ── SECTION TITLES ── */
+.section-label { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.section-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.section-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+/* ── KPI STRIP ── */
+.kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.kpi-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px; position: relative; overflow: hidden;
+}
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent-color, var(--saffron)); }
+.kpi-val { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--accent-color, var(--saffron)); line-height: 1; }
+.kpi-label { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+.kpi-sig { font-size: 10.5px; color: var(--muted); margin-top: 6px; line-height: 1.5; border-top: 1px solid var(--border); padding-top: 8px; }
+
+/* ── SURVIVORSHIP TABLE ── */
+.surv-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.surv-table th { text-align: left; padding: 10px 14px; font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+.surv-table td { padding: 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+.surv-table tr:hover td { background: var(--card-hover); }
+.surv-table .sector-name { font-weight: 600; font-size: 13px; }
+.surv-table .cagr { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
+
+/* ── GRID 2-COL ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+@media(max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+.card-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.card-sub { font-size: 11px; color: var(--muted); margin-bottom: 18px; }
+
+/* ── SENSITIVITY MATRIX ── */
+.matrix-wrap { overflow-x: auto; }
+.matrix-table { border-collapse: collapse; font-size: 12px; width: 100%; }
+.matrix-table th { padding: 8px 12px; font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; text-align: center; border-bottom: 1px solid var(--border); }
+.matrix-table td { padding: 9px 12px; text-align: center; border: 1px solid rgba(255,255,255,0.04); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; }
+.matrix-table .row-label { text-align: left; color: var(--muted); font-size: 11px; font-weight: 400; font-family: 'Inter', sans-serif; padding-left: 4px; }
+
+/* heat cells */
+.h-vbad { background: rgba(232,64,64,0.35); color: #FF9090; }
+.h-bad { background: rgba(232,64,64,0.18); color: #E88080; }
+.h-warn { background: rgba(245,166,35,0.2); color: var(--amber); }
+.h-ok { background: rgba(30,201,138,0.12); color: var(--jade); }
+.h-good { background: rgba(30,201,138,0.22); color: #50EDB0; }
+.h-vgood { background: rgba(30,201,138,0.35); color: #70FFCA; }
+
+/* ── VENDOR PROFILES ── */
+.vendor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.vendor-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+.vendor-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.vendor-grade { font-size: 11px; margin-bottom: 14px; }
+.vendor-stat { display: flex; justify-content: space-between; font-size: 11.5px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.vendor-stat:last-child { border-bottom: none; }
+.vendor-stat .val { font-weight: 600; color: var(--white); }
+.progress-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 10px; }
+.progress-fill { height: 100%; border-radius: 2px; }
+
+/* ── QCOMMERCE ── */
+.waterfall-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.wf-header { padding: 10px 14px; font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+.wf-row { display: flex; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12.5px; align-items: center; }
+.wf-row.total { background: rgba(255,255,255,0.05); font-weight: 600; }
+.wf-row.highlight { font-weight: 700; }
+.wf-label { color: var(--muted); font-size: 12px; }
+.wf-val-gt { color: var(--jade); font-family: 'Syne', sans-serif; font-weight: 700; }
+.wf-val-qc { color: var(--amber); font-family: 'Syne', sans-serif; font-weight: 700; }
+
+.ops-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 8px; }
+.ops-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.ops-label { font-size: 10px; color: var(--muted); margin-bottom: 6px; }
+.ops-val-gt { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--jade); }
+.ops-val-qc { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--amber); }
+
+/* ── CARBON TRACKER ── */
+.carbon-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.carbon-table th { text-align: left; padding: 10px 14px; font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+.carbon-table td { padding: 13px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.carbon-table tr:hover td { background: var(--card-hover); }
+.intensity-bar-wrap { display: flex; align-items: center; gap: 10px; }
+.intensity-bar { height: 6px; border-radius: 3px; }
+
+/* ── SLIDER CONTROLS ── */
+.controls { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 24px; }
+.controls-title { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 16px; }
+.slider-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.slider-group { }
+.slider-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+.slider-val { color: var(--saffron); font-weight: 600; }
+input[type=range] { width: 100%; accent-color: var(--saffron); cursor: pointer; }
+
+/* ── DYNAMIC RESULT ── */
+.dyn-result { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
+.dyn-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+.dyn-card .val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+.dyn-card .lbl { font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+/* ── QC BLEND ── */
+.qc-blend-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.qc-blend-row:hover { background: var(--card-hover); }
+.qc-mix-label { font-weight: 600; color: var(--muted); min-width: 60px; }
+.qc-blend-vals { display: flex; gap: 20px; }
+.qc-v { text-align: center; min-width: 80px; }
+.qc-v .n { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; }
+.qc-v .l { font-size: 9px; color: var(--muted); }
+
+/* ── CHART CONTAINERS ── */
+.chart-box { position: relative; height: 240px; }
+
+/* ── FOOTER ── */
+.footer-note { font-size: 10.5px; color: var(--muted); margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    Strategic Darwinism<br>Corporate India
+    <span>2026 – 2031 Outlook · v2.0</span>
+  </div>
+  <div class="nav-section">Overview</div>
+  <button class="nav-item active" onclick="showView('exec')">
+    <span class="nav-dot" style="--c:var(--saffron);background:var(--saffron)"></span>Executive Summary
+  </button>
+  <div class="nav-section">Sector Models</div>
+  <button class="nav-item" onclick="showView('it')">
+    <span class="nav-dot" style="background:var(--jade)"></span>IT Deflation Model
+  </button>
+  <button class="nav-item" onclick="showView('qcom')">
+    <span class="nav-dot" style="background:var(--amber)"></span>Q-Commerce Economics
+  </button>
+  <button class="nav-item" onclick="showView('carbon')">
+    <span class="nav-dot" style="background:var(--crimson)"></span>BRSR &amp; Carbon Risk
+  </button>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Executive Summary &amp; KPIs</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="topbar-meta">Updated Sep 2026</span>
+      <span class="badge badge-saffron">v2.0</span>
+    </div>
+  </div>
+
+  <!-- ═══════════ VIEW 1: EXECUTIVE SUMMARY ═══════════ -->
+  <div class="view active" id="view-exec">
+    <p class="section-label">Key Macro &amp; Sectoral Survivorship Metrics</p>
+    <div class="section-title">Strategic Darwinism in Corporate India</div>
+    <div class="section-sub">Five-year survivorship, disruption &amp; capital allocation outlook — 2026 to 2031</div>
+
+    <!-- KPI STRIP -->
+    <div class="kpi-strip">
+      <div class="kpi-card" style="--accent-color:var(--crimson)">
+        <div class="kpi-val">35%</div>
+        <div class="kpi-label">IT Billing Headcount Deflation</div>
+        <div class="kpi-sig">AI automation replacing 30–40% junior FTE hours</div>
+      </div>
+      <div class="kpi-card" style="--accent-color:var(--amber)">
+        <div class="kpi-val">45%</div>
+        <div class="kpi-label">Q-Commerce Urban Market Share</div>
+        <div class="kpi-sig">Surging from $10B in 2025 to $65–70B by 2030</div>
+      </div>
+      <div class="kpi-card" style="--accent-color:var(--crimson)">
+        <div class="kpi-val">90,000</div>
+        <div class="kpi-label">Kirana Store Shutdowns (Metros)</div>
+        <div class="kpi-sig">Urban neighbourhood retail displacement</div>
+      </div>
+      <div class="kpi-card" style="--accent-color:var(--jade)">
+        <div class="kpi-val">82%</div>
+        <div class="kpi-label">Regulated BNPL Co-Lending Share</div>
+        <div class="kpi-sig">Shift from shadow balance sheets to bank-backed co-lending</div>
+      </div>
+      <div class="kpi-card" style="--accent-color:var(--saffron)">
+        <div class="kpi-val">75%</div>
+        <div class="kpi-label">BRSR Core Value Chain Coverage</div>
+        <div class="kpi-sig">Mandatory Scope 1–3 audit extending to top 500 listed firms</div>
+      </div>
+      <div class="kpi-card" style="--accent-color:var(--jade)">
+        <div class="kpi-val">$2.10</div>
+        <div class="kpi-label">Green Hydrogen Target LCOH ($/kg)</div>
+        <div class="kpi-sig">National Green Hydrogen Mission cost benchmark</div>
+      </div>
+    </div>
+
+    <!-- SURVIVORSHIP MATRIX -->
+    <p class="section-label" style="margin-top:8px">Sectoral Survivorship Matrix — Winners vs. Obsolescent Archetypes</p>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:28px">
+      <table class="surv-table">
+        <thead>
+          <tr>
+            <th>Sector</th>
+            <th>Enterprise Winners</th>
+            <th>Obsolescent Archetypes</th>
+            <th>Core Disruption Vector</th>
+            <th style="text-align:center">5-Yr CAGR</th>
+            <th style="text-align:center">Outlook</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="sector-name">IT &amp; Technology</div></td>
+            <td>TCS, Infosys, HCLTech, Persistent</td>
+            <td style="color:var(--crimson)">Legacy App Maintenance &amp; Generic BPOs</td>
+            <td>Agentic AI code-gen &amp; outcome billing</td>
+            <td style="text-align:center"><span class="cagr" style="color:var(--jade)">9.5%</span></td>
+            <td style="text-align:center"><span class="badge badge-jade">Outperform</span></td>
+          </tr>
+          <tr>
+            <td><div class="sector-name">Consumer &amp; FMCG</div></td>
+            <td>Omnichannel &amp; Dark-Store Portfolios</td>
+            <td style="color:var(--crimson)">Un-digitized Urban Wholesalers &amp; Kiranas</td>
+            <td>15-min Q-Commerce dark store velocity</td>
+            <td style="text-align:center"><span class="cagr" style="color:var(--amber)">12.0%</span></td>
+            <td style="text-align:center"><span class="badge badge-amber">Transforming</span></td>
+          </tr>
+          <tr>
+            <td><div class="sector-name">BFSI &amp; Fintech</div></td>
+            <td>Bank-Partnered Licensed NBFCs, Cred</td>
+            <td style="color:var(--crimson)">Shadow BNPL &amp; Unregulated Apps</td>
+            <td>RBI AML/KYC crackdown &amp; co-lending mandates</td>
+            <td style="text-align:center"><span class="cagr" style="color:var(--jade)">15.0%</span></td>
+            <td style="text-align:center"><span class="badge badge-jade">Consolidating</span></td>
+          </tr>
+          <tr>
+            <td><div class="sector-name">Heavy Industry &amp; Metals</div></td>
+            <td>Captive RE Open-Access Adopters</td>
+            <td style="color:var(--crimson)">Unhedged High-Carbon Coal Exporters</td>
+            <td>EU CBAM carbon tariffs &amp; BRSR Core audit</td>
+            <td style="text-align:center"><span class="cagr" style="color:var(--amber)">8.0%</span></td>
+            <td style="text-align:center"><span class="badge badge-crimson">High Risk</span></td>
+          </tr>
+          <tr>
+            <td><div class="sector-name">Energy &amp; Power</div></td>
+            <td>Integrated Giants (RIL, Adani, SECI)</td>
+            <td style="color:var(--crimson)">Standalone Unintegrated Thermal Gens</td>
+            <td>National Green Hydrogen Mission SIGHT PLI</td>
+            <td style="text-align:center"><span class="cagr" style="color:var(--jade)">18.0%</span></td>
+            <td style="text-align:center"><span class="badge badge-jade">Expanding</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTOR CHART -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">5-Year CAGR by Sector</div>
+        <div class="card-sub">Projected compound annual growth rates 2026–2031</div>
+        <div class="chart-box"><canvas id="cagrChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Disruption Severity vs. Capital Compounding</div>
+        <div class="card-sub">Bubble = market size; X-axis = disruption severity (1–10)</div>
+        <div class="chart-box"><canvas id="bubbleChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="footer-note">Source: Strategic Darwinism in Corporate India (2026–2031), v2.0 — Sep 2026. Data reflects aggregated analyst consensus, BRSR filings, and proprietary sectoral modelling. All projections are forward-looking estimates subject to revision.</div>
+  </div>
+
+  <!-- ═══════════ VIEW 2: IT DEFLATION MODEL ═══════════ -->
+  <div class="view" id="view-it">
+    <p class="section-label">IT Services Revenue Deflation &amp; AI Contract Sensitivity</p>
+    <div class="section-title">IT Deflation Sensitivity Model</div>
+    <div class="section-sub">Interactive scenario testing — manpower deflation % vs. AI outcome contract value realization rate</div>
+
+    <!-- INTERACTIVE CONTROLS -->
+    <div class="controls">
+      <div class="controls-title">Live Scenario Controls</div>
+      <div class="slider-row">
+        <div class="slider-group">
+          <div class="slider-label">Headcount / Billing Deflation Rate <span class="slider-val" id="def-val">30%</span></div>
+          <input type="range" min="10" max="50" value="30" step="5" id="def-slider" oninput="updateIT()">
+        </div>
+        <div class="slider-group">
+          <div class="slider-label">AI Contract Realization Rate <span class="slider-val" id="ai-val">50%</span></div>
+          <input type="range" min="10" max="100" value="50" step="5" id="ai-slider" oninput="updateIT()">
+        </div>
+      </div>
+      <div class="dyn-result">
+        <div class="dyn-card">
+          <div class="val" id="dyn-rev" style="color:var(--jade)">—</div>
+          <div class="lbl">Net Industry Revenue ($B)</div>
+        </div>
+        <div class="dyn-card">
+          <div class="val" id="dyn-growth" style="color:var(--amber)">—</div>
+          <div class="lbl">Growth vs. $60B Baseline</div>
+        </div>
+        <div class="dyn-card">
+          <div class="val" id="dyn-ebitda" style="color:var(--saffron)">—</div>
+          <div class="lbl">Blended EBITDA ($B)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:24px">
+      <!-- SENSITIVITY MATRIX 1 -->
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="padding:18px 20px 12px">
+          <div class="card-title">Net IT Revenue ($B)</div>
+          <div class="card-sub">Combined industry revenue across deflation &amp; AI realization scenarios</div>
+        </div>
+        <div class="matrix-wrap">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th style="text-align:left">Deflation ↓ / AI →</th>
+                <th>10%</th><th>25%</th><th>50%</th><th>75%</th><th>100%</th>
+              </tr>
+            </thead>
+            <tbody id="matrix1-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- SENSITIVITY MATRIX 2 -->
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="padding:18px 20px 12px">
+          <div class="card-title">Revenue Growth vs. $60B Baseline (%)</div>
+          <div class="card-sub">Percentage change from current $60B industry aggregate</div>
+        </div>
+        <div class="matrix-wrap">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th style="text-align:left">Deflation ↓ / AI →</th>
+                <th>10%</th><th>25%</th><th>50%</th><th>75%</th><th>100%</th>
+              </tr>
+            </thead>
+            <tbody id="matrix2-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENDOR PROFILES -->
+    <p class="section-label">Company-Specific Vendor Profiles &amp; AI Defensiveness Score</p>
+    <div class="vendor-grid" id="vendor-grid"></div>
+
+    <!-- CHART -->
+    <div class="card" style="margin-top:24px">
+      <div class="card-title">AI Contract Share vs. 5-Year Revenue CAGR</div>
+      <div class="card-sub">Defensiveness score comparison across IT vendors</div>
+      <div class="chart-box" style="height:260px"><canvas id="itChart"></canvas></div>
+    </div>
+
+    <div class="footer-note">Base model: $60B combined revenue; $42B headcount-linked; $18B fixed; 22% EBITDA margin; 35% AI contract pricing premium. All projections indicative.</div>
+  </div>
+
+  <!-- ═══════════ VIEW 3: Q-COMMERCE ═══════════ -->
+  <div class="view" id="view-qcom">
+    <p class="section-label">FMCG &amp; D2C Brand Margin Model</p>
+    <div class="section-title">Q-Commerce Brand Economics</div>
+    <div class="section-sub">Unit economics per ₹100 MRP — Quick Commerce vs. Traditional General Trade</div>
+
+    <div class="grid-2">
+      <!-- WATERFALL -->
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="padding:18px 20px 12px">
+          <div class="card-title">Channel Unit Economics Waterfall</div>
+          <div class="card-sub">Cost breakdown per ₹100 MRP product</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr">
+          <div class="wf-header" style="color:var(--jade)">Traditional GT</div>
+          <div class="wf-header" style="color:var(--amber)">Quick Commerce</div>
+        </div>
+        <div id="waterfall-rows"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr">
+          <div class="wf-header" style="color:var(--jade)">Net Margin: ₹37</div>
+          <div class="wf-header" style="color:var(--amber)">Net Margin: ₹32</div>
+        </div>
+      </div>
+
+      <!-- OPERATIONAL METRICS -->
+      <div class="card">
+        <div class="card-title">Key Working Capital &amp; Operational Metrics</div>
+        <div class="card-sub">Speed, credit cycle &amp; network scale comparison</div>
+        <div class="ops-grid" id="ops-cards"></div>
+        <div style="margin-top:20px">
+          <div class="card-title" style="font-size:13px;margin-bottom:10px">Channel Margin Visualization</div>
+          <div class="chart-box" style="height:200px"><canvas id="marginChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLENDED MARGIN SENSITIVITY -->
+    <p class="section-label" style="margin-top:8px">Brand Blended Margin Sensitivity vs. Q-Commerce Sales Mix</p>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:24px">
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr;gap:0;padding:10px 14px;border-bottom:1px solid var(--border)">
+        <span style="font-size:10px;color:var(--muted);font-weight:600">QC Mix</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;text-align:center">Net Realized (₹)</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;text-align:center">Gross Margin %</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;text-align:center">Working Capital Days</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;text-align:center">ROIC Multiplier</span>
+      </div>
+      <div id="blend-rows"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Blended Metrics as Q-Commerce Mix Increases</div>
+      <div class="card-sub">Net margin compresses but ROIC accelerates sharply as working capital days shrink</div>
+      <div class="chart-box" style="height:260px"><canvas id="blendChart"></canvas></div>
+    </div>
+
+    <div class="footer-note">Unit economics model: MRP = ₹100. GT: platform take 10%, retailer 14%, logistics 4%, COGS 35%, net brand margin ₹37, WC days 45. QC: platform commission 22%, dark store/logistics 5%, promotion 6% (not shown in gross split), COGS 35%, net brand margin ₹32, WC days 8. ROIC multiplier indexed to GT baseline.</div>
+  </div>
+
+  <!-- ═══════════ VIEW 4: CARBON RISK ═══════════ -->
+  <div class="view" id="view-carbon">
+    <p class="section-label">Heavy Industry Decarbonization &amp; Export Protection</p>
+    <div class="section-title">BRSR &amp; CBAM Carbon Risk Tracker</div>
+    <div class="section-sub">Scope 1–3 auditability, EU CBAM tariff exposure &amp; decarbonization positioning — 2026</div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="kpi-strip" style="margin-bottom:28px">
+      <div class="kpi-card" style="--accent-color:var(--crimson)">
+        <div class="kpi-val">2.25</div>
+        <div class="kpi-label">tCO₂/t — Blast Furnace Steel</div>
+        <div class="kpi-sig">Highest carbon intensity; $85/tonne CBAM tariff exposure</div>
+      </div>
+      <div class="kpi-card" style="--accent-color:var(--jade)">
+        <div class="kpi-val">0.10</div>
+        <div class="kpi-label">tCO₂/t — Green Ammonia</div>
+        <div class="kpi-sig">CBAM exempt via SIGHT PLI; 90% captive RE coverage</div>
+      </div>
+      <div class="kpi-card" style="--accent-color:var(--saffron)">
+        <div class="kpi-val">$85</div>
+        <div class="kpi-label">Max CBAM Tariff Impact ($/tonne)</div>
+        <div class="kpi-sig">Primary Steel — highest Phase-In risk sector</div>
+      </div>
+      <div class="kpi-card" style="--accent-color:var(--amber)">
+        <div class="kpi-val">FY26</div>
+        <div class="kpi-label">Mandatory BRSR Core Audit</div>
+        <div class="kpi-sig">3 of 5 sectors entering mandatory audit phase</div>
+      </div>
+    </div>
+
+    <!-- MAIN CARBON TABLE -->
+    <p class="section-label">Sectoral Carbon Intensity &amp; EU CBAM Financial Exposure</p>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:28px">
+      <table class="carbon-table">
+        <thead>
+          <tr>
+            <th>Industrial Sector</th>
+            <th>Scope 1+2 Intensity (tCO₂/t)</th>
+            <th>EU CBAM Status</th>
+            <th style="text-align:center">Captive RE Share</th>
+            <th>BRSR Audit</th>
+            <th style="text-align:center">CBAM Impact ($/t)</th>
+          </tr>
+        </thead>
+        <tbody id="carbon-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Carbon Intensity by Sector (tCO₂/t Output)</div>
+        <div class="card-sub">Lower is better — green hydrogen pathway is the benchmark</div>
+        <div class="chart-box" style="height:250px"><canvas id="carbonChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Captive RE Coverage vs. CBAM Tariff Exposure</div>
+        <div class="card-sub">Higher RE coverage correlates with lower tariff risk</div>
+        <div class="chart-box" style="height:250px"><canvas id="reChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- DECARBONIZATION PATHWAY -->
+    <p class="section-label" style="margin-top:8px">Decarbonization Pathway — Risk Classification</p>
+    <div class="grid-3">
+      <div class="card" style="border-color:rgba(232,64,64,0.3)">
+        <div class="card-title" style="color:var(--crimson)">High Risk — Immediate Action</div>
+        <div class="card-sub" style="margin-bottom:12px">Active CBAM Phase-In exposure</div>
+        <div style="font-size:12.5px;line-height:2">
+          <div>Primary Steel (Blast Furnace) <span class="badge badge-crimson" style="float:right">$85/t</span></div>
+          <div>Aluminum Smelting <span class="badge badge-crimson" style="float:right">$65/t</span></div>
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(245,166,35,0.3)">
+        <div class="card-title" style="color:var(--amber)">Medium Risk — Transition Path</div>
+        <div class="card-sub" style="margin-bottom:12px">Phase-In but manageable with RE investment</div>
+        <div style="font-size:12.5px;line-height:2">
+          <div>Cement &amp; Clinker <span class="badge badge-amber" style="float:right">$28/t</span></div>
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(30,201,138,0.3)">
+        <div class="card-title" style="color:var(--jade)">Compliant — Positioned to Win</div>
+        <div class="card-sub" style="margin-bottom:12px">CBAM exempt or actively preferred</div>
+        <div style="font-size:12.5px;line-height:2">
+          <div>Green Steel (DRI+Scrap EAF) <span class="badge badge-jade" style="float:right">$12/t</span></div>
+          <div>Green Ammonia &amp; Fertilizers <span class="badge badge-jade" style="float:right">$0/t</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">Sources: EU CBAM Phase-In Schedule 2026, BRSR Core Framework (SEBI FY26 Mandate), National Green Hydrogen Mission SIGHT PLI guidelines, company-level Scope 1–3 disclosures. Captive RE share reflects open-access contracts as % of total energy consumed. CBAM tariff estimates subject to EU ETS carbon price volatility.</div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// ── NAV ──
+const views = { exec:'view-exec', it:'view-it', qcom:'view-qcom', carbon:'view-carbon' };
+const titles = { exec:'Executive Summary &amp; KPIs', it:'IT Deflation Sensitivity Model', qcom:'Q-Commerce Brand Economics', carbon:'BRSR &amp; CBAM Carbon Risk Tracker' };
+function showView(key) {
+  Object.keys(views).forEach(k => {
+    document.getElementById(views[k]).classList.toggle('active', k===key);
+    document.querySelectorAll('.nav-item').forEach((el,i) => {
+      const keys = Object.keys(views);
+      if(keys[i]===key) el.classList.add('active'); else el.classList.remove('active');
+    });
+  });
+  document.getElementById('topbar-title').innerHTML = titles[key];
+}
+
+// ── CHART DEFAULTS ──
+Chart.defaults.color = '#8898BB';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = "'Inter', sans-serif";
+
+// ═══════════ EXEC CHARTS ═══════════
+const cagrCtx = document.getElementById('cagrChart').getContext('2d');
+new Chart(cagrCtx, {
+  type: 'bar',
+  data: {
+    labels: ['IT & Tech','Consumer FMCG','BFSI & Fintech','Heavy Industry','Energy & Power'],
+    datasets: [{
+      data: [9.5, 12.0, 15.0, 8.0, 18.0],
+      backgroundColor: ['#1EC98A','#F5A623','#1EC98A','#E84040','#1EC98A'],
+      borderRadius: 5, borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { ticks: { callback: v => v+'%' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+    }
+  }
+});
+
+const bubbleCtx = document.getElementById('bubbleChart').getContext('2d');
+new Chart(bubbleCtx, {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: 'IT & Tech', data: [{x:8.5,y:8.5,r:18}], backgroundColor:'rgba(30,201,138,0.5)' },
+      { label: 'Consumer FMCG', data: [{x:9,y:9,r:12}], backgroundColor:'rgba(245,166,35,0.5)' },
+      { label: 'BFSI & Fintech', data: [{x:8,y:8,r:10}], backgroundColor:'rgba(30,201,138,0.4)' },
+      { label: 'Heavy Industry', data: [{x:7.5,y:7,r:14}], backgroundColor:'rgba(232,64,64,0.5)' },
+      { label: 'Energy & Power', data: [{x:8.8,y:9.2,r:11}], backgroundColor:'rgba(255,153,51,0.5)' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: true, position:'bottom', labels: { boxWidth:10, font:{size:10} } } },
+    scales: {
+      x: { title:{display:true,text:'Disruption Severity (1–10)'}, min:6, max:10 },
+      y: { title:{display:true,text:'Capital Compounding Score (1–10)'}, min:6, max:10 }
+    }
+  }
+});
+
+// ═══════════ IT MODEL ═══════════
+const matrix1Data = [
+  [57.12,59.11,62.42,65.72,69.03],
+  [52.78,54.54,57.48,60.42,63.36],
+  [48.43,49.97,52.55,55.12,57.69],
+  [44.08,45.41,47.61,49.81,52.02],
+  [39.73,40.84,42.67,44.51,46.35]
+];
+const matrix2Data = [
+  [-4.8,-1.5,4.0,9.5,15.1],
+  [-12.0,-9.1,-4.2,0.7,5.6],
+  [-19.3,-16.7,-12.4,-8.1,-3.9],
+  [-26.5,-24.3,-20.7,-17.0,-13.3],
+  [-33.8,-31.9,-28.9,-25.8,-22.7]
+];
+const deflLabels = ['Deflation 10%','Deflation 20%','Deflation 30%','Deflation 40%','Deflation 50%'];
+
+function heatClass1(v) {
+  if(v >= 60) return 'h-good';
+  if(v >= 55) return 'h-ok';
+  if(v >= 50) return 'h-warn';
+  if(v >= 44) return 'h-bad';
+  return 'h-vbad';
+}
+function heatClass2(v) {
+  if(v >= 5) return 'h-vgood';
+  if(v >= 0) return 'h-good';
+  if(v >= -5) return 'h-ok';
+  if(v >= -15) return 'h-warn';
+  if(v >= -25) return 'h-bad';
+  return 'h-vbad';
+}
+
+const m1 = document.getElementById('matrix1-body');
+const m2 = document.getElementById('matrix2-body');
+deflLabels.forEach((lbl,i) => {
+  let r1 = `<tr><td class="row-label">${lbl}</td>`;
+  let r2 = `<tr><td class="row-label">${lbl}</td>`;
+  matrix1Data[i].forEach(v => { r1 += `<td class="${heatClass1(v)}">${v}</td>`; });
+  matrix2Data[i].forEach(v => { r2 += `<td class="${heatClass2(v)}">${v>0?'+':''}${v}%</td>`; });
+  r1 += '</tr>'; r2 += '</tr>';
+  m1.innerHTML += r1; m2.innerHTML += r2;
+});
+
+// Dynamic IT calculator
+function updateIT() {
+  const d = parseInt(document.getElementById('def-slider').value)/100;
+  const a = parseInt(document.getElementById('ai-slider').value)/100;
+  document.getElementById('def-val').textContent = Math.round(d*100)+'%';
+  document.getElementById('ai-val').textContent = Math.round(a*100)+'%';
+  const hcRev = 42*(1-d);
+  const aiUplift = hcRev*a*0.35;
+  const netRev = hcRev + aiUplift + 18;
+  const growth = ((netRev-60)/60*100);
+  const ebitda = netRev*0.22;
+  const revEl = document.getElementById('dyn-rev');
+  const grEl = document.getElementById('dyn-growth');
+  revEl.textContent = '$'+netRev.toFixed(1)+'B';
+  revEl.style.color = netRev >= 60 ? 'var(--jade)' : 'var(--crimson)';
+  grEl.textContent = (growth>=0?'+':'')+growth.toFixed(1)+'%';
+  grEl.style.color = growth >= 0 ? 'var(--jade)' : 'var(--crimson)';
+  document.getElementById('dyn-ebitda').textContent = '$'+ebitda.toFixed(1)+'B';
+}
+updateIT();
+
+// Vendor cards
+const vendors = [
+  { name:'TCS', cap:165, platform:'OpenAI Hypervault & GenAI Studio', aiShare:0.28, cagr:0.095, grade:'A+', gradeColor:'var(--jade)', gradeLabel:'Market Leader' },
+  { name:'Infosys', cap:85, platform:'Topaz AI & Copilot Ecosystem', aiShare:0.25, cagr:0.088, grade:'A', gradeColor:'var(--jade)', gradeLabel:'High Resilience' },
+  { name:'HCLTech', cap:48, platform:'HCL Software & AI Force', aiShare:0.22, cagr:0.082, grade:'A−', gradeColor:'var(--jade)', gradeLabel:'Resilient' },
+  { name:'Persistent', cap:12, platform:'Agentic AI Engineering', aiShare:0.35, cagr:0.145, grade:'A+', gradeColor:'var(--jade)', gradeLabel:'Growth Outperformer' },
+  { name:'Legacy Mid-Caps', cap:5, platform:'Unintegrated Legacy Maintenance', aiShare:0.05, cagr:-0.04, grade:'F', gradeColor:'var(--crimson)', gradeLabel:'Obsolete / At Risk' }
+];
+const vg = document.getElementById('vendor-grid');
+vendors.forEach(v => {
+  const pct = Math.round(v.aiShare*100);
+  const cagrStr = (v.cagr >= 0 ? '+' : '') + Math.round(v.cagr*100) + '%';
+  const cagrColor = v.cagr >= 0 ? 'var(--jade)' : 'var(--crimson)';
+  vg.innerHTML += `<div class="vendor-card">
+    <div class="vendor-name">${v.name}</div>
+    <div class="vendor-grade"><span class="badge ${v.cagr<0?'badge-crimson':'badge-jade'}">${v.grade} · ${v.gradeLabel}</span></div>
+    <div class="vendor-stat"><span class="wf-label">Market Cap</span><span class="val">$${v.cap}B</span></div>
+    <div class="vendor-stat"><span class="wf-label">AI Contract Share</span><span class="val" style="color:var(--saffron)">${pct}%</span></div>
+    <div class="vendor-stat"><span class="wf-label">5-Yr Revenue CAGR</span><span class="val" style="color:${cagrColor}">${cagrStr}</span></div>
+    <div class="vendor-stat"><span class="wf-label">Key AI Platform</span></div>
+    <div style="font-size:10.5px;color:var(--muted);margin-top:4px">${v.platform}</div>
+    <div class="progress-bar" style="margin-top:10px"><div class="progress-fill" style="width:${pct}%;background:${v.cagr<0?'var(--crimson)':'var(--jade)'}"></div></div>
+    <div style="font-size:9px;color:var(--muted);margin-top:4px">AI contract penetration: ${pct}%</div>
+  </div>`;
+});
+
+const itCtx = document.getElementById('itChart').getContext('2d');
+new Chart(itCtx, {
+  type:'bar',
+  data: {
+    labels: vendors.map(v=>v.name),
+    datasets: [
+      { label:'AI Contract Share (%)', data: vendors.map(v=>v.aiShare*100), backgroundColor:'rgba(255,153,51,0.6)', yAxisID:'y' },
+      { label:'5-Yr CAGR (%)', data: vendors.map(v=>v.cagr*100), backgroundColor: vendors.map(v=>v.cagr<0?'rgba(232,64,64,0.6)':'rgba(30,201,138,0.6)'), yAxisID:'y' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position:'bottom', labels:{boxWidth:10,font:{size:10}} } },
+    scales: {
+      y: { ticks:{callback:v=>v+'%'}, grid:{color:'rgba(255,255,255,0.05)'} },
+      x: { grid:{display:false} }
+    }
+  }
+});
+
+// ═══════════ Q-COMMERCE ═══════════
+const wfItems = [
+  { label:'Platform Commission / Take Rate', gt:10, qc:22 },
+  { label:'Retailer / Dark Store Margin & Slotting', gt:14, qc:6 },
+  { label:'Logistics, Spoilage & Damaged Goods', gt:4, qc:5 },
+  { label:'Total Channel Deductions', gt:28, qc:33, total:true },
+  { label:'Brand Net Realized Revenue', gt:72, qc:67, highlight:true },
+  { label:'COGS (Manufacturing & Packaging)', gt:35, qc:35 },
+  { label:'Brand Gross Profit', gt:37, qc:32, highlight:true },
+  { label:'Inventory Turn Days', gt:'45d', qc:'8d' }
+];
+const wfEl = document.getElementById('waterfall-rows');
+wfItems.forEach(r => {
+  const cls = r.total?'wf-row total':r.highlight?'wf-row highlight':'wf-row';
+  wfEl.innerHTML += `<div class="${cls}"><span class="wf-label">${r.label}</span>
+    <span style="display:flex;gap:24px;min-width:120px;justify-content:flex-end">
+      <span class="wf-val-gt">${typeof r.gt==='number'?'₹'+r.gt:r.gt}</span>
+      <span class="wf-val-qc">${typeof r.qc==='number'?'₹'+r.qc:r.qc}</span>
+    </span></div>`;
+});
+
+const opsData = [
+  { label:'Fulfillment Speed', gt:'24–72h', qc:'< 15 min' },
+  { label:'Credit Cycle', gt:'45–90 Days', qc:'7 Days' },
+  { label:'Repeat Order Rate', gt:'40–55%', qc:'55–70%' },
+  { label:'Network Scale (2026)', gt:'12M+ Kiranas', qc:'7,000+ Dark Stores' }
+];
+const opsEl = document.getElementById('ops-cards');
+opsData.forEach(o => {
+  opsEl.innerHTML += `<div class="ops-card">
+    <div class="ops-label">${o.label}</div>
+    <div class="ops-val-gt" style="font-size:12px;margin-bottom:4px">${o.gt}</div>
+    <div class="ops-val-qc" style="font-size:12px">${o.qc}</div>
+    <div style="font-size:9px;color:var(--muted);margin-top:4px"><span style="color:var(--jade)">●</span> GT &nbsp;<span style="color:var(--amber)">●</span> QC</div>
+  </div>`;
+});
+
+const marginCtx = document.getElementById('marginChart').getContext('2d');
+new Chart(marginCtx, {
+  type:'bar',
+  data: {
+    labels:['Net Realized','COGS','Gross Profit'],
+    datasets:[
+      { label:'General Trade', data:[72,35,37], backgroundColor:'rgba(30,201,138,0.65)', borderRadius:4 },
+      { label:'Quick Commerce', data:[67,35,32], backgroundColor:'rgba(245,166,35,0.65)', borderRadius:4 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}},
+    scales:{
+      x:{grid:{display:false}},
+      y:{ticks:{callback:v=>'₹'+v},grid:{color:'rgba(255,255,255,0.05)'}}
+    }
+  }
+});
+
+const blendData = [
+  {qc:0, net:72.0, gm:0.370, wc:45.0, roic:1.0},
+  {qc:15, net:71.2, gm:0.362, wc:39.5, roic:1.14},
+  {qc:30, net:70.5, gm:0.355, wc:33.9, roic:1.33},
+  {qc:50, net:69.5, gm:0.345, wc:26.5, roic:1.70},
+  {qc:75, net:68.2, gm:0.333, wc:17.2, roic:2.61},
+  {qc:100, net:67.0, gm:0.320, wc:8.0, roic:5.62}
+];
+const blendEl = document.getElementById('blend-rows');
+blendData.forEach(r => {
+  const roicColor = r.roic >= 2 ? 'var(--jade)' : r.roic >= 1.5 ? 'var(--amber)' : 'var(--muted)';
+  blendEl.innerHTML += `<div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr;gap:0;padding:11px 14px;border-bottom:1px solid var(--border);font-size:12.5px;align-items:center">
+    <span style="color:var(--saffron);font-weight:700;font-family:'Syne',sans-serif">${r.qc}%</span>
+    <span style="text-align:center;font-family:'Syne',sans-serif;font-weight:700">₹${r.net.toFixed(1)}</span>
+    <span style="text-align:center;font-family:'Syne',sans-serif;font-weight:700">${(r.gm*100).toFixed(1)}%</span>
+    <span style="text-align:center;color:var(--jade);font-family:'Syne',sans-serif;font-weight:700">${r.wc.toFixed(1)}d</span>
+    <span style="text-align:center;color:${roicColor};font-family:'Syne',sans-serif;font-weight:700">${r.roic}x</span>
+  </div>`;
+});
+
+const blendCtx = document.getElementById('blendChart').getContext('2d');
+new Chart(blendCtx, {
+  type:'line',
+  data: {
+    labels: blendData.map(r=>r.qc+'%'),
+    datasets:[
+      { label:'Net Realized Revenue (₹)', data:blendData.map(r=>r.net), borderColor:'var(--amber)', backgroundColor:'rgba(245,166,35,0.08)', tension:0.3, yAxisID:'y1', pointRadius:4, fill:true },
+      { label:'ROIC Multiplier (x)', data:blendData.map(r=>r.roic), borderColor:'var(--jade)', backgroundColor:'rgba(30,201,138,0.08)', tension:0.3, yAxisID:'y2', pointRadius:4, fill:true }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,0.04)'},title:{display:true,text:'Q-Commerce Sales Mix %'}},
+      y1:{position:'left',ticks:{callback:v=>'₹'+v},grid:{color:'rgba(255,255,255,0.04)'},title:{display:true,text:'Net Revenue (₹)'}},
+      y2:{position:'right',ticks:{callback:v=>v+'x'},grid:{display:false},title:{display:true,text:'ROIC Multiplier'}}
+    }
+  }
+});
+
+// ═══════════ CARBON ═══════════
+const carbonData = [
+  { sector:'Primary Steel (Blast Furnace)', intensity:2.25, cbam:'Active Phase-In', cbamClass:'badge-crimson', re:0.15, brsr:'Mandatory Audit FY26', tariff:85 },
+  { sector:'Green Steel (DRI + Scrap EAF)', intensity:0.55, cbam:'Exempt / Preferred', cbamClass:'badge-jade', re:0.65, brsr:'Compliant', tariff:12 },
+  { sector:'Cement & Clinker', intensity:0.72, cbam:'Active Phase-In (Med)', cbamClass:'badge-amber', re:0.35, brsr:'Mandatory Audit FY26', tariff:28 },
+  { sector:'Aluminum Smelting', intensity:1.85, cbam:'Active Phase-In', cbamClass:'badge-crimson', re:0.25, brsr:'Mandatory Audit FY26', tariff:65 },
+  { sector:'Green Ammonia & Fertilizers', intensity:0.10, cbam:'CBAM Exempt (SIGHT PLI)', cbamClass:'badge-jade', re:0.90, brsr:'Compliant', tariff:0 }
+];
+const ctb = document.getElementById('carbon-tbody');
+carbonData.forEach(r => {
+  const barW = Math.round((r.intensity/2.25)*120);
+  const barColor = r.intensity > 1.5 ? 'var(--crimson)' : r.intensity > 0.6 ? 'var(--amber)' : 'var(--jade)';
+  const tariffColor = r.tariff > 50 ? 'var(--crimson)' : r.tariff > 15 ? 'var(--amber)' : 'var(--jade)';
+  const reColor = r.re > 0.6 ? 'var(--jade)' : r.re > 0.3 ? 'var(--amber)' : 'var(--crimson)';
+  ctb.innerHTML += `<tr>
+    <td style="font-weight:600">${r.sector}</td>
+    <td>
+      <div class="intensity-bar-wrap">
+        <div class="intensity-bar" style="width:${barW}px;background:${barColor};opacity:0.8"></div>
+        <span style="color:${barColor};font-family:'Syne',sans-serif;font-weight:700">${r.intensity}</span>
+      </div>
+    </td>
+    <td><span class="badge ${r.cbamClass}">${r.cbam}</span></td>
+    <td style="text-align:center;color:${reColor};font-weight:700;font-family:'Syne',sans-serif">${Math.round(r.re*100)}%</td>
+    <td><span class="badge ${r.brsr==='Compliant'?'badge-jade':'badge-amber'}">${r.brsr}</span></td>
+    <td style="text-align:center;color:${tariffColor};font-weight:700;font-family:'Syne',sans-serif">${r.tariff===0?'—':'$'+r.tariff}</td>
+  </tr>`;
+});
+
+const carbonCtx = document.getElementById('carbonChart').getContext('2d');
+new Chart(carbonCtx, {
+  type:'bar',
+  data: {
+    labels: carbonData.map(r=>r.sector.replace(' & ','\n& ')),
+    datasets:[{
+      label:'tCO₂/t Output',
+      data: carbonData.map(r=>r.intensity),
+      backgroundColor: carbonData.map(r=>r.intensity>1.5?'rgba(232,64,64,0.65)':r.intensity>0.6?'rgba(245,166,35,0.65)':'rgba(30,201,138,0.65)'),
+      borderRadius:4
+    }]
+  },
+  options: {
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,0.05)'},title:{display:true,text:'tCO₂ per tonne output'}},
+      y:{grid:{display:false},ticks:{font:{size:10}}}
+    }
+  }
+});
+
+const reCtx = document.getElementById('reChart').getContext('2d');
+new Chart(reCtx, {
+  type:'scatter',
+  data: {
+    datasets: carbonData.map((r,i)=>({
+      label: r.sector,
+      data:[{x:r.re*100, y:r.tariff}],
+      backgroundColor: r.intensity>1.5?'rgba(232,64,64,0.7)':r.intensity>0.6?'rgba(245,166,35,0.7)':'rgba(30,201,138,0.7)',
+      pointRadius: 10 + r.intensity*4,
+      pointHoverRadius: 14
+    }))
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:d=>`${d.dataset.label}: RE ${d.parsed.x}%, CBAM $${d.parsed.y}/t`}}
+    },
+    scales:{
+      x:{title:{display:true,text:'Captive RE Coverage (%)'},min:0,max:100,grid:{color:'rgba(255,255,255,0.05)'}},
+      y:{title:{display:true,text:'CBAM Tariff Impact ($/tonne)'},min:-5,grid:{color:'rgba(255,255,255,0.05)'}}
+    }
+  }
+});
+</script>
+</body>
+</html>
